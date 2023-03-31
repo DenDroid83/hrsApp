@@ -1,6 +1,10 @@
 import javax.swing.*;
+import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Objects;
 
 public class hrsAppGUI extends JFrame {
@@ -14,6 +18,8 @@ public class hrsAppGUI extends JFrame {
     private JLabel instructionLabel1;
     private JLabel instructionLabel2;
     private JLabel creditsLabel;
+    private JButton copyButton;
+    private JButton clearButton;
 
     public hrsAppGUI(String title) {
         super(title);
@@ -21,8 +27,9 @@ public class hrsAppGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setContentPane(mainPanel);
         this.pack();
-        setSize(500,300);
-        setLocation(700,300);
+        setSize(500, 300);
+        setLocation(700, 300);
+
         calcButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -43,9 +50,49 @@ public class hrsAppGUI extends JFrame {
                     double map6xRound = Math.round(map6x * 100.00) / 100.00;
                     double map6x95 = Math.ceil(map6xRound) - 0.05;
                     resultLabel.setText("1xMAP= " + map1xRound + " 3xMAP= " + map3x95 + " 6xMAP= " + map6x95);
-                } else resultLabel.setText("Please fill in both fields for MSRP and MAP");
+                } else resultLabel.setText("Please fill in both fields for MSRP and MAP or at least MAP.");
             }
         });
+
+        copyButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String copyData = resultLabel.getText();
+                StringSelection ss = new StringSelection(copyData);
+                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
+            }
+        });
+
+        clearButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                msrpField.setText("");
+                mapField.setText("");
+                resultLabel.setText("Please enter MSRP and MAP and click calculate");
+            }
+        });
+
+        msrpField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                //super.keyPressed(e);
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    mapField.requestFocus();
+                }
+            }
+        });
+
+        mapField.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                //super.keyPressed(e);
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    //calcButton.requestFocus();
+                    calcButton.doClick();
+                }
+            }
+        });
+
     }
 
     public static void main(String[] args) {

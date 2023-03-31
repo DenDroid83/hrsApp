@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="hrsApp:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/hrsApp_jar</output-path>
+    <root id="archive" name="hrsApp.jar">
+      <element id="module-output" name="hrsApp" />
+    </root>
+  </artifact>
+</component>
